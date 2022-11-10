@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <ul class="nav nav-tabs">
+        <!-- use routerlink in stead of href. href will re-load the page and Routerlink will just parse the path and finds a fitting component to render the page. -->
+        <!-- if you add a "/" before the path it means you siginify an absolute path. If you leave out the "/" you signify a relative path bothe.
+        lets say you have another routerlink (routerLink="/servers") in the "servers.component" and you leave out the "/". it will then add/append the servers path element
+         to the already existing path element like so: localhost:4200/servers/servers.
+        you can also use  (routerLink="../servers") which moves up one path element until the domain (localhost:4200), which is kind of the same thing as using /servers
+        to sum up:
+        /servers -> absolute path
+        servers or ./servers relative path
+        ../servers absolute path
+      
+      RouterActive is an Angular directive that signifies which route is active.
+    The problem is, that the Home directive is always set as active. This is the case because RouterLinkActive looks at all active paths. localhost:4200 is always
+  active, whether it is localhost:4200/servers or localhost:4200/users
+  therefore we need to use the directive routerLinkActiveOptions on the home tab
+  {exact:true} tells Angular only activate this tab if the EXACT route is active-->
+        <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/">Home</a></li>
+        <li role="presentation" routerLinkActive="active"><a routerLink="/servers">Servers</a></li>
+        <!-- you can also set up the routerlink as a directive with the path elements captured in an Array. This allows us to fine-tune the path elements later. -->
+        <li role="presentation" routerLinkActive="active"><a [routerLink]="['/users']">Users</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
