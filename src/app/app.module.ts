@@ -11,16 +11,28 @@ import { EditServerComponent } from './servers/edit-server/edit-server.component
 import { ServerComponent } from './servers/server/server.component';
 import { ServersService } from './servers/servers.service';
 import { RouterModule, Routes } from '@angular/router';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
-
-  { path: 'users', component: UsersComponent },
+  
+  { path: 'users', component: UsersComponent, children: [
+    { path: ':id/:name', component: UserComponent }
+  ] },
   //we can add parameters to our path like so. The colon tells Angular that this is the dynamic part of the path.
   //the part oafter the ":" can be anything. for example /users/something would load a single user.
-  { path: 'users/:id/:name', component: UserComponent },
-  { path: 'servers', component: ServersComponent },
-  { path: 'servers/:id/edit', component: EditServerComponent },
+  //we can nest routes to avoid code duplication, we have to add another <router-outlet> though in the child template.
+  //in other words, <router-outlet> in the servers template can only render paths 'servers' that trigger ServersComponent
+  //not its child elements, so paths servers/id triggering ServerComponent.
+  { path: 'servers', component: ServersComponent, children: [
+      { path: ':id', component: ServerComponent },
+      { path: ':id/edit', component: EditServerComponent },
+    ] 
+  },
+  { path: 'not-found' , component: PageNotFoundComponent},
+  //    ** means, catch all paths you dont know
+  // your routes get parsed from top to bottom, so when it can't find a match, it'll re-direct to not-found
+  { path: '**' , redirectTo: '/not-found'}
 ];
 
 @NgModule({
@@ -32,6 +44,7 @@ const appRoutes: Routes = [
     UserComponent,
     EditServerComponent,
     ServerComponent,
+    PageNotFoundComponent,
   ],
   imports: [BrowserModule, FormsModule, RouterModule.forRoot(appRoutes)],
   providers: [ServersService],

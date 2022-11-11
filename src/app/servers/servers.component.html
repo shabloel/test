@@ -4,8 +4,8 @@
       <!-- queryParams and fragment are bindable properties of the routerLink directive. If you add them like below
       in the template, they will be added to the path. -->
       <a
-        [routerLink]="['/servers', server.id, 'edit']"
-        [queryParams]="{allowEdit: 'foo'}"
+        [routerLink]="['/servers', server.id]"
+        [queryParams]="{allowEdit: server.id === 3 ? '1' : '0'}"
         [fragment]="'loading'"
         href="#"
         class="list-group-item"
@@ -15,10 +15,11 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-4">
-    <button class="btn btn-primary" (click)="onReload()">Reload servers</button>
+    <router-outlet></router-outlet>
+    <!-- <button class="btn btn-primary" (click)="onReload()">Reload servers</button>  
     <app-edit-server></app-edit-server>
     <hr>
-    <app-server></app-server>
+    <app-server></app-server> -->
   </div>
 </div>
 

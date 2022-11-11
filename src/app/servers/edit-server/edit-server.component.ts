@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import { ServersService } from '../servers.service';
 
@@ -12,6 +12,7 @@ export class EditServerComponent implements OnInit {
   server: { id: number; name: string; status: string };
   serverName = '';
   serverStatus = '';
+  isAllowed: boolean = false;
 
   constructor(
     private serversService: ServersService,
@@ -25,7 +26,11 @@ export class EditServerComponent implements OnInit {
 
     //second approach, load every time the url changes
     this.activatedRoute.fragment.subscribe();
-    this.activatedRoute.queryParams.subscribe();
+    this.activatedRoute.queryParams.subscribe(
+      (params: Params) => {
+        this.isAllowed = params['allowEdit'] === '1' ? true : false;
+      }
+    );
 
     this.server = this.serversService.getServer(1);
     this.serverName = this.server.name;
