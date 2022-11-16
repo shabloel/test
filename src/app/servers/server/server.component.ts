@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Data, Params, Router } from '@angular/router';
 
 import { ServersService } from '../servers.service';
 
@@ -20,12 +20,22 @@ export class ServerComponent implements OnInit {
     //add the + to convert to a number
     // const id = +this.activatedRoute.snapshot.params['id'];
     // this.server = this.serversService.getServer(id);
+    
     //allternative
-    this.activatedRoute.params.subscribe(
-      (params: Params) => {
-      this.server = this.serversService.getServer(+params['id']);
-      }
-    )
+    // //commented out as the new resolver is now responsible for this task.
+    // this.activatedRoute.params.subscribe(
+    //   (params: Params) => {
+    //   this.server = this.serversService.getServer(+params['id']);
+    //   }
+    // )
+
+    //resolver
+    this.activatedRoute.data
+      .subscribe(
+        (data: Data) => {
+          this.server = data['server'];
+        }
+      );
   }
 
   public editServer(){
